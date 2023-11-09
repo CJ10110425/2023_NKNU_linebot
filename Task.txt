@@ -1,0 +1,36 @@
+Task Title: Rich Menu Design and Dynamic Switching Functionality
+
+Task Description:
+We require a dynamic Rich Menu interface to enhance the user interaction experience for our academic platform. This task involves creating a rich menu with specific features for professors and implementing a feature that allows the dynamic switching of menus based on user actions.
+
+Objectives:
+1. Design a Rich Menu that is in line with our linebot platform's branding and user experience.
+2. Develop a Rich Menu switching functionality that allows professors to switch between different menu options based on the context (initializing, distributing homework, announcing exams, handling student questions).
+
+Specific Requirements:
+1. The Rich Menu for professors should include the following three functionalities:
+   - `distribute_homework`
+   - `announce_exam`
+   - `handle_student_question`
+2. An initial Rich Menu view with a single option:
+   - `initialize`
+
+Deadline: [11/12]
+
+Git Instructions for Collaborators:
+To clone the `rich_menu` branch to your local system, follow these steps:
+
+1. Open your terminal.
+
+2. Clone the specific `rich_menu` branch with the following command:
+git clone -b rich_menu --single-branch https://github.com/kjdevelop/2023_NKNU_linebot.git
+
+3. Navigate to the cloned directory:
+cd 2023_NKNU_linebot
+
+4. Make your changes in this branch. When you are ready to upload your changes to GitHub, use the following commands:
+git add .
+git commit -m "Your detailed commit message"
+git push origin rich_menu
+
+Please ensure your commit message is descriptive of the changes you have made. If you encounter any issues, do not hesitate to reach out.
