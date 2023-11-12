@@ -7,7 +7,8 @@
 import os
 from dotenv import load_dotenv
 import openai
-import Pro_anno_exam
+from Pro_function import Pro_anno_exam
+import math
 
 
 class professor:
@@ -140,3 +141,5 @@ class professor:
             use to handle student question
         '''
         pass
+
+

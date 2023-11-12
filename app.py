@@ -1,8 +1,8 @@
-import MongoDB_profile
+from MongoDB import MongoDB_profile
 # 載入LineBot所需要的套件
 import os
 import Init
-import Pro_functions
+from Pro_function import Pro_functions
 import re
 from flask import Flask, request, abort, render_template
 from flask import redirect
