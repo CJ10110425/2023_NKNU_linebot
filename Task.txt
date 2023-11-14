@@ -15,7 +15,7 @@ Specific Requirements:
 2. An initial Rich Menu view with a single option:
    - `initialize`
 
-Deadline: [11/12]
+Deadline: [11/16]
 
 Git Instructions for Collaborators:
 To clone the `rich_menu` branch to your local system, follow these steps:
