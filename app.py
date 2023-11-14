@@ -2,7 +2,7 @@ from MongoDB import MongoDB_profile
 # 載入LineBot所需要的套件
 import os
 import Init
-from Pro_function import Pro_functions
+from pro_function import pro_functions
 import re
 from flask import Flask, request, abort, render_template
 from flask import redirect
@@ -87,7 +87,7 @@ def handle_message(event):
             Linebot_init = Init._None(Linebot)
             Linebot_init.Init()
         case "Professor":
-            Linebot_Professor = Pro_functions.professor(Linebot)
+            Linebot_Professor = pro_functions.professor(Linebot)
             Linebot_Professor.professor_function()
         case "Student":
             '''go to Student Doc'''

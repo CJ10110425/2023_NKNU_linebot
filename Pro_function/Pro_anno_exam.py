@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 
 # Organize professor's copywriting
-def Organising_Profes_test_text(msg) -> (str,bool):
+def Organising_Profes_test_text(msg) -> (str, bool):
     completion = openai.ChatCompletion.create(
         model="ft:gpt-3.5-turbo-0613:personal::8Hwz1kxq",
         messages=[{"role": "system", "content": "2023年,當一個高雄師範大學電子工程系教授的助理,幫教授整理文案並且遵照順序列出日期、時間、地點、科目、範圍（章）、是否開書考,只能回覆考試內容"}, {
@@ -13,8 +13,8 @@ def Organising_Profes_test_text(msg) -> (str,bool):
     )
     generated_text = completion['choices'][0]['message']['content']
     generated_text = stop_content(generated_text)
-    generated_text,flag= extract_pending_info(generated_text)
-    return generated_text,flag
+    generated_text, flag = extract_pending_info(generated_text)
+    return generated_text, flag
 
 
 # Filter pending items and remind users to complete them
@@ -24,11 +24,11 @@ def extract_pending_info(text) -> str:
 
     if matches:
         pending_items = '、'.join(matches).strip()
-        return f"\n請完成『{pending_items}』項目",False
+        return f"\n請完成『{pending_items}』項目", False
     elif is_hyphen_starting(text):
-        return text,True
-    else :
-        return "\n"+text,False
+        return text, True
+    else:
+        return "\n"+text, False
 
 
 # Stop_content function
@@ -41,12 +41,13 @@ def stop_content(text) -> str:
         return text
 
 # confirm hyphen starting
+
+
 def is_hyphen_starting(input_str):
     if input_str.startswith('-'):
         return True
     else:
         return False
-
 
 
 if __name__ == "__main__":

@@ -7,8 +7,7 @@
 import os
 from dotenv import load_dotenv
 import openai
-from Pro_function import Pro_anno_exam
-import math
+import pro_anno_exam
 
 
 class professor:
@@ -103,7 +102,7 @@ class professor:
                 if msg.lower() == "distribute_homework":
                     return level
                 else:
-                    self.reply_msg, flag = Pro_anno_exam.Organising_Profes_test_text(#TODO: create Pro_dist_work.Organising_Profes_test_text
+                    self.reply_msg, flag = Pro_anno_exam.Organising_Profes_test_text(  # TODO: create Pro_dist_work.Organising_Profes_test_text
                         self.linebot.msg)
             case 1:
                 if msg.lower() == "ok":
@@ -112,7 +111,7 @@ class professor:
                     return level - 1
             case _:
                 print("error")
-    
+
     def distribute_homework(self) -> None:
         '''TODO: create rule.json to set up the rule (read/write file)'''
         '''TODO: create get_rule.py to read rule.json'''
@@ -133,13 +132,11 @@ class professor:
                 '''
                 self.linebot.reply_msg(
                     "completed sending message to your students,thank you")
-                self.linebot.reply_msg("completed sending message to your students,thank you")
-        
+                self.linebot.reply_msg(
+                    "completed sending message to your students,thank you")
 
     def handle_student_question(self) -> None:
         '''
             use to handle student question
         '''
         pass
-
-
