@@ -1,0 +1,36 @@
+[
+    {   
+        "id": "initial_menu",
+        "size": {"width": 2500, "height": 1686},
+        "selected": true,
+        "name": "未初始化的頁面 版本一",
+        "chatBarText": "open/close",
+        "areas": [
+            {
+                "bounds": {"x": 687, "y": 205, "width": 1125.9, "height": 1114.7},
+                "action": {"type": "message", "text": "Start Initializing"}
+            }
+        ]
+    },
+    {   
+        "id": "professor_menu",
+        "size": {"width":2500, "height": 1686},
+        "selected": true,
+        "name": "教授頁面 版本一",
+        "chatBarText": "open/close",
+        "areas": [
+            {
+                "bounds": {"x":0, "y":354.2, "width":833, "height":848.5},
+                "action": {"type": "message", "text": "Distribute homework"}
+            },
+            {
+                "bounds": {"x":834, "y":354.2, "width":833, "height":848.5},
+                "action": {"type": "message", "text": "Announce exam"}
+            },
+            {
+                "bounds": {"x":1667, "y":354.2, "width":833, "height":848.5},
+                "action": {"type": "message", "text": "Handle students' questions"}
+            }
+        ]
+    }
+]
