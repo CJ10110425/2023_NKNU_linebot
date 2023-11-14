@@ -25,7 +25,7 @@ To clone the `professors_DB` branch to your local system, please use the followi
 1. Open your terminal.
 
 2. Clone the specific `professors_DB` branch with the command:
-   `git clone -b rich_menu --single-branch https://github.com/kjdevelop/2023_NKNU_linebot.git`
+   `git clone -b professors_DB --single-branch https://github.com/kjdevelop/2023_NKNU_linebot.git`
 
 3. Navigate to the cloned directory:
    `cd 2023_Professor_DB`
