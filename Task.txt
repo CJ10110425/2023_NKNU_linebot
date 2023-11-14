@@ -17,7 +17,7 @@ Specific Requirements:
    - Function to retrieve professor data.
    - Please feel free to discuss with me regarding the parameters and details of these functions.
 
-Deadline: [11/12]
+Deadline: [11/16]
 
 Git Instructions for Collaborators:
 To clone the `professors_DB` branch to your local system, please use the following steps:
