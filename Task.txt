@@ -16,6 +16,7 @@ Specific Requirements:
    - Function to input student data.
    - Function to retrieve student data.
    - Feel free to discuss with me regarding the parameters and details of these functions.
+3. Establish a database for students enrolled in courses taught by the advising professor. This database should be capable of associating the professor's courses with the students in those courses.
 
 Deadline: [11/16]
 
