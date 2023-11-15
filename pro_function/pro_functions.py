@@ -7,7 +7,7 @@
 import os
 from dotenv import load_dotenv
 import openai
-from pro_function import pro_anno_exam
+from Pro_function import pro_anno_exam
 
 
 class professor:

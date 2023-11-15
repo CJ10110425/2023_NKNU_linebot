@@ -1,5 +1,5 @@
-from rich_menu import rich_menu
 import dotenv
+from Rich_menu import rich_menu
 dotenv.load_dotenv()
 
 '''
