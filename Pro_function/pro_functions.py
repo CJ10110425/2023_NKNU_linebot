@@ -8,9 +8,10 @@ import os
 from dotenv import load_dotenv
 import openai
 from Pro_function import pro_anno_exam
+import logging
 
 
-class professor:
+class Professor:
     def __init__(self, linebot) -> None:
         load_dotenv()
         self.linebot = linebot
@@ -66,7 +67,11 @@ class professor:
                 else:
                     return level - 1
             case _:
-                print("error")
+                logging.error(
+                    'Unhandled case in announce_exam_level with level: %s', level)
+                self.linebot.reply_msg(
+                    "An unexpected error occurred. Please try again.")
+                return level  # 或者返回一个代表错误状态的特殊值
 
     def announce_exam(self) -> None:
         '''TODO: create rule.json to set up the rule (read/write file)'''
@@ -110,7 +115,11 @@ class professor:
                 else:
                     return level - 1
             case _:
-                print("error")
+                logging.error(
+                    'Unhandled case in announce_exam_level with level: %s', level)
+                self.linebot.reply_msg(
+                    "An unexpected error occurred. Please try again.")
+                return level  # 或者返回一个代表错误状态的特殊值
 
     def distribute_homework(self) -> None:
         '''TODO: create rule.json to set up the rule (read/write file)'''

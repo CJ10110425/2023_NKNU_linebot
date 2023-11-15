@@ -38,7 +38,7 @@ class LineBotApp:
                     linebot_init = Init._None(linebot)
                     linebot_init.Init()
                 case "Professor":
-                    linebot_professor = pro_functions.professor(linebot)
+                    linebot_professor = pro_functions.Professor(linebot)
                     linebot_professor.professor_function()
                 case "Student":
                     # go to Student Doc
