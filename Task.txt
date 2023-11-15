@@ -21,7 +21,7 @@ Specific Requirements:
 3. An initial Rich Menu view for both user types with a single option:
    - initialize for professors
 
-Deadline: [11/16]
+Deadline: [11/17]
 
 Git Instructions for Collaborators:
 To clone the `rich_menu` branch to your local system, follow these steps:
