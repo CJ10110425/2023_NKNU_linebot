@@ -1,19 +1,25 @@
-Task Title: Rich Menu Design and Dynamic Switching Functionality
+Task Title: Rich Menu Design and Dynamic Switching Functionality for Professors and Students
 
 Task Description:
-We require a dynamic Rich Menu interface to enhance the user interaction experience for our academic platform. This task involves creating a rich menu with specific features for professors and implementing a feature that allows the dynamic switching of menus based on user actions.
-
+The objective is to enhance user interaction on our academic platform through a dynamic Rich Menu interface. This task involves creating distinct rich menus for both professors and students, with each menu containing specific features tailored to their roles.
 Objectives:
-1. Design a Rich Menu that is in line with our linebot platform's branding and user experience.
-2. Develop a Rich Menu switching functionality that allows professors to switch between different menu options based on the context (initializing, distributing homework, announcing exams, handling student questions).
+
+1. Design two separate Rich Menus that align with our linebot platform's branding and user experience, one for professors and one for students.
+2. Develop a dynamic Rich Menu switching functionality that allows users to switch between different menu options based on their role and context.
 
 Specific Requirements:
-1. The Rich Menu for professors should include the following three functionalities:
-   - `distribute_homework`
-   - `announce_exam`
-   - `handle_student_question`
-2. An initial Rich Menu view with a single option:
-   - `initialize`
+
+1. Professor Rich Menu should include the following functionalities:
+   - distribute_homework
+   - announce_exam
+   - handle_student_question
+2. Student Rich Menu should include the following functionalities:
+   - initiate_activity
+   - query_exam_info
+   - query_homework_info
+   - view_latest_activities
+3. An initial Rich Menu view for both user types with a single option:
+   - initialize for professors
 
 Deadline: [11/16]
 
