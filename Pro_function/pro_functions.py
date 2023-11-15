@@ -5,10 +5,12 @@
     3.handle_student_question
 '''
 import os
-from dotenv import load_dotenv
 import openai
-from Pro_function import pro_anno_exam
+import time
 import logging
+from Pro_function import pro_anno_exam
+from dotenv import load_dotenv
+
 
 
 class Professor:
