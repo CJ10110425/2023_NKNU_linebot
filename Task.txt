@@ -18,7 +18,7 @@ Specific Requirements:
    - Feel free to discuss with me regarding the parameters and details of these functions.
 3. Establish a database for students enrolled in courses taught by the advising professor. This database should be capable of associating the professor's courses with the students in those courses.
 
-Deadline: [11/16]
+Deadline: [11/17]
 
 Git Instructions for Collaborators:
 To clone the `students_DB` branch to your local system, please follow these steps:
