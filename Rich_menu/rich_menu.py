@@ -11,7 +11,7 @@ line_bot_api = LineBotApi(os.getenv('LINE_BOT_API_TOKEN'))
 
 
 # 創建menu格式,(json格式id, path/to/your/image)
-def create_menu(image_path, json_menu_id=["initial_menu", "professor_menu"]) -> str:
+def create_menu(image_path, json_menu_id=["initial_menu", "professor_menu","student_menu"]) -> str:
     headers = {
         "Authorization": "Bearer " + os.getenv('LINE_BOT_API_TOKEN'),
         "Content-Type": "application/json"
@@ -50,11 +50,11 @@ def delete_menu(rich_menu_id) -> str:
         print(f"刪除富文本菜單時發生錯誤：{e}")
         return (f"刪除富文本菜單失敗，錯誤訊息：{e}")
 
+
 # userID為個別使用者ID，要測試就用自己的ID
 # 以下menuID請換成你要的menu的ID
 
-
-def switch_menu(userID, menu_ID=["INITIAL_MENU_ID", "PROFESSOR_MENU_ID"]):
+def switch_menu(userID, menu_ID=["INITIAL_MENU_ID", "PROFESSOR_MENU_ID", "STUDENT_MENU_ID"]):
     menu_ID = os.getenv(menu_ID)
     line_bot_api.link_rich_menu_to_user(userID, menu_ID)
 
@@ -64,6 +64,12 @@ def main() -> None:
     # print(create_menu("professor_menu", "/Users/lipinze/Desktop/Coody/rich_menu/src/professor.png"))
     # switch_to_initial_menu(os.getenv("USER_ID"),"richmenu-12cfc895db64fd6fcbb7b27e9bf20211")
     # default_rich_menu("richmenu-12cfc895db64fd6fcbb7b27e9bf20211")
+    '''
+        TODO Your path and json_menu_id location are reversed
+    '''
+    #print(create_menu("C:/Users/USER/Desktop/2023_NKNU_linebot/src/student.png", "student_menu"))
+
+
     pass
 
 
