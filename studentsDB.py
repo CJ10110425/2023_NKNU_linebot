@@ -1,7 +1,12 @@
 import pymongo
+import dotenv
+import os
+
+
+dotenv.load_dotenv()
+
 ## 下面連結得自行連結 ##
-myclient = pymongo.MongoClient(
-    "mongodb+srv://christmastime20001225:Chrisli1216@cluster0.hxo9fnv.mongodb.net")
+myclient = pymongo.MongoClient(os.getenv("MongoDB_URL"))
 mydb = myclient["Student_DB"]
 mycol = mydb["Student_profile"]
 
