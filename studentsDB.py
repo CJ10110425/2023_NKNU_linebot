@@ -15,17 +15,17 @@ mycol = mydb["Student_profile"]
 
 def insert_userprofile(student_id, student_gender, student_name, student_class):
     mycol.insert_one({"Student_Id": student_id, "Student_gender": student_gender,
-                     "Student_name": student_name, "student_class": student_class})
+                     "Student_name": student_name, "Student_class": student_class})
     ## 學生課程要用集合表示 ##
 
 
-def class_to_name(target_student_class):
+def find_name_by_course(target_student_class):
 
     ## 從學生的課程找尋學生的姓名 ##
 
     classes = []
     ## 鎖定想查詢課程 ##
-    query = {"student_class": {"$in": [target_student_class]}}
+    query = {"Student_class": {"$in": [target_student_class]}}
     ## 找尋符合相同資料的人 ##
     results = mycol.find(query)
     ## 接接續將相同課程的學生的 "Student_name" 這組資料由 append接續儲存至results ##
@@ -34,13 +34,13 @@ def class_to_name(target_student_class):
     return classes
 
 
-def class_to_id(target_student_class):
+def find_id_by_course(target_student_class):
 
     ## 從學生的課程找尋學生的ID ##
 
     IDs = []
     ## 鎖定想查詢課程##
-    query = {"student_class": {"$in": [target_student_class]}}
+    query = {"Student_class": {"$in": [target_student_class]}}
     ## 找尋符合相同資料的人##
     results = mycol.find(query)
     ## 接接續將相同課程的學生的 "Student_name" 這組資料由 append接續儲存至results ##
