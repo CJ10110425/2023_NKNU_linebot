@@ -18,13 +18,11 @@ def insert_userprofile(student_id, student_gender, student_name, student_class):
                      "Student_name": student_name, "student_class": student_class})
     ## 學生課程要用集合表示 ##
 
-    
-
 
 def class_to_name(target_student_class):
-    
+
     ## 從學生的課程找尋學生的姓名 ##
-    
+
     classes = []
     ## 鎖定想查詢課程 ##
     query = {"student_class": {"$in": [target_student_class]}}
@@ -35,13 +33,11 @@ def class_to_name(target_student_class):
         classes.append(result["Student_name"])
     return classes
 
-    
-
 
 def class_to_id(target_student_class):
-    
+
     ## 從學生的課程找尋學生的ID ##
-    
+
     IDs = []
     ## 鎖定想查詢課程##
     query = {"student_class": {"$in": [target_student_class]}}
