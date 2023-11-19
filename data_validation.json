@@ -2,36 +2,31 @@
     "insert_validation": [{
         "$jsonSchema": {
             "bsonType": "Object",
-            "required": ["professor_name", "date", "main_teaching", "assignment"],
+            "required": ["name", "gender", "subject_Taught"],
             "properties": {
-                "professor_name": {
+                "name": {
                     "bsonType": "string",
                     "description": "must be a string"
                 },
-                "date": {
-                    "bsonType": "date",
-                    "description": "must be a date type"
+                "gender": {
+                    "bsonType": "string",
+                    "description": "must be string"
                 },
-                "subject": {
+                "subject_taught": {
                     "anyof": [
                         {"bsonType": "list"},
                         {"bsonType": "string"}
                     ],
                     "desciption": "data type can be a string or a list"
-                }, 
-                "assignment": { 
-                    "bsonType": "string",
-                    "desciption": "must be a string"
                 }
             }
         }
     }]
 },
-    "document": {
-        "insert_test": {
-            "professor": "Jason",
-            "subject": "Data_Science",
-            "assignment": "Homework: exercises 1, 2, 3"
-        }
+"document": {
+    "insert_test": {
+        "name": "Jason",
+        "gender": "Male",
+        "subject_taught": "Data_Science"
     }
-}
+}}
