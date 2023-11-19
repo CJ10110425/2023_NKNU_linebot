@@ -6,8 +6,8 @@ import os
 dotenv.load_dotenv()
 
 ## 下面連結得自行連結 ##
-myclient = pymongo.MongoClient(os.getenv("MongoDB_URL"))
-mydb = myclient["Student_DB"]
+myclient = pymongo.MongoClient(os.getenv("MONGODB_URL"))
+mydb = myclient["Student_dB"]
 mycol = mydb["Student_profile"]
 
 ## 學生的資料形式 ##
