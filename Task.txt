@@ -1,0 +1,39 @@
+Task Title: Creation of Student Database for Third-Year Electrical Engineering Students at National Kaohsiung Normal University
+
+Task Description:
+The objective is to develop a comprehensive student database for the third-year Electrical Engineering students at National Kaohsiung Normal University. This task entails creating a structured database within our system that efficiently stores and retrieves student information.
+
+Objectives:
+1. Create a structured and accessible database for storing student information.
+2. Implement functions for inputting and retrieving student data, enhancing data management and accessibility.
+
+Specific Requirements:
+1. The database, named `students_DB`, should include the following information for each student:
+   - Name
+   - Gender
+   - Student ID
+2. The database should provide the following functionalities:
+   - Function to input student data.
+   - Function to retrieve student data.
+   - Feel free to discuss with me regarding the parameters and details of these functions.
+3. Establish a database for students enrolled in courses taught by the advising professor. This database should be capable of associating the professor's courses with the students in those courses.
+
+Deadline: [11/17]
+
+Git Instructions for Collaborators:
+To clone the `students_DB` branch to your local system, please follow these steps:
+
+1. Open your terminal.
+
+2. Clone the specific `students_DB` branch with the command:
+   `git clone -b students_DB --single-branch https://github.com/kjdevelop/2023_NKNU_linebot.git`
+
+3. Navigate to the cloned directory:
+   `cd 2023_NKNU_EE`
+
+4. Make your changes in this branch. When you are ready to upload your changes to GitHub, use the following commands:
+   `git add .`
+   `git commit -m "Your detailed commit message"`
+   `git push origin students_DB`
+
+Ensure that your commit message accurately describes the changes you have made. If you encounter any issues, please feel free to reach out for assistance.
