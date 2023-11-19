@@ -38,6 +38,7 @@ def find_id_by_course(target_student_class):
 
     ## 從學生的課程找尋學生的ID ##
     ss=6
+    ss=4
     IDs = []
     ## 鎖定想查詢課程##
     query = {"Student_class": {"$in": [target_student_class]}}
