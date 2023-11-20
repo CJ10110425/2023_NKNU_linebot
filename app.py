@@ -6,7 +6,6 @@ from linebot.models import *
 import os
 import Init
 from Pro_function import pro_functions
-import re
 import linebot_class
 
 
