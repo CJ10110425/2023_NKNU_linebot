@@ -16,7 +16,7 @@ def create_menu(image_path, json_menu_id=["initial_menu", "professor_menu","stud
         "Authorization": "Bearer " + os.getenv('LINE_BOT_API_TOKEN'),
         "Content-Type": "application/json"
     }
-    with open('rich_menu_config.json', 'r', encoding='utf-8') as json_file:
+    with open('/Users/lipinze/Desktop/Coody/Rich_menu/rich_menu_config.json', 'r', encoding='utf-8') as json_file:
         menu_data = json.load(json_file)
 
     for body in menu_data:
@@ -67,7 +67,7 @@ def main() -> None:
     '''
         TODO Your path and json_menu_id location are reversed
     '''
-    print(create_menu("C:/Users/USER/Desktop/2023_NKNU_linebot/src/student.png", "student_menu"))
+    print(create_menu("/Users/lipinze/Desktop/Coody/Rich_menu/src/student.png", "student_menu"))
 
 
     pass
@@ -75,3 +75,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

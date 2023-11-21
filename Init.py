@@ -21,9 +21,7 @@ class _None:
         match self.linebot.Status:
             case "Standard":
                 '''Choose Identity'''
-                '''
-                    FIXME: if user input Student while Status is Standard,it will skip msg requested you to choose identity
-                '''
+
                 match msg:
                     case "Student":
                         '''jump to Student function'''
@@ -85,7 +83,7 @@ class _None:
                 self.linebot.Change_Status("Standard")
                 self.linebot.Change_Level(0)
                 Data = " *** Query Database with Identity to findout Profile"
-
+                rich_menu.switch_menu(self.linebot.ID, "STUDENT_MENU_ID")
                 self.linebot.reply_msg(
                     Data+"\n Initialization successful\nPlease restart your line app")
             case _:
