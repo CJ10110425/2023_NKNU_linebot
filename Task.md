@@ -14,6 +14,7 @@ This project aims to develop a formal version of a student database. The primary
    - `user_id`
    - `stu_name`
    - `stu_gender`
+   - `stu_id`
    - `stu_subject`
    - `mail`
    - `activation_code`
