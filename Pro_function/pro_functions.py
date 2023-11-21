@@ -32,6 +32,12 @@ class Professor:
                 self.announce_exam()
             case "handle_student_question":
                 self.handle_student_question()
+            case _:
+                logging.error(
+                    'Unhandled case in professor_function with Status: %s', Status)
+                self.linebot.reply_msg(
+                    "An unexpected error occurred. Please try again.")
+
 
     def determine_function(self) -> None:
         match self.linebot.msg:

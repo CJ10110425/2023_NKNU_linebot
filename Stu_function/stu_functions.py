@@ -1,12 +1,15 @@
 '''
     students functions
-    1.organize_event
-    2.ask_pro_question
+    1.initiate_activity
+    2.query_exam_info
+    3.query_homework-info
+    4.view_latest_activities
 '''
 
 import os
 from dotenv import load_dotenv
 import openai
+import logging
 
 
 class student:
@@ -18,94 +21,60 @@ class student:
         self.reply_msg = ""
 
     def student_function(self) -> None:
-        Status = self.linebot.Status.lower()
-        match Status:
+        status = self.linebot.Status.lower()
+        match status:
             case "standard":
-                self.determine_function()
-            case "organize_event":
-                self.organize_event()
-            case "ask_pro_question":
-                self.ask_pro_question()
+                pass
+            case "initiate_activity":
+                self.initiate_activity()
+            case "query_exam_info":
+                self.query_exam_info()
+            case "query_homework_info":
+                self.query_homework_info()
+            case "view_latest_activities":
+                self.view_latest_activities()
             case _:
-                self.reply_msg = "sorry, I don't understand"
+                logging.error(
+                    'Unhandled case in professor_function with Status: %s', status)
+                self.linebot.reply_msg(
+                    'An unexpected error occurred. Please try again.g'
+                )
 
     def determine_function(self) -> None:
         match self.linebot.msg:
-            case "organize_event":
-                self.linebot.Change_Status("organize_event")
-                self.organize_event()
-            case "ask_pro_question":
-                self.linebot.Change_Status("ask_pro_question")
-                self.ask_pro_question()
+            case "initiate activity":
+                self.linebot.Change_Status("initiate_activity")
+                self.initiate_activity()
+            case "query exam info":
+                self.linebot.Change_Status("query_exam_info")
+                self.query_exam_info()
+            case "query homework info":
+                self.linebot.Change_Status("query_homework_info")
+                self.query_homework_info()
+            case "view latest activities":
+                self.linebot.Change_Status("view_latest_activities")
+                self.view_latest_activities()
             case _:
-                self.reply_msg = "sorry, I don't understand"
-                self.linebot.reply_msg(self.reply_msg)
+                logging.error(
+                    'Unhandled case in determine_function with msg: %s', self.linebot.msg)
+                self.linebot.reply_msg(
+                    'An unexpected error occurred. Please try again.g'
+                    )
     
-    def organize_event_level(self) -> int:
+    def initiate_activity_level(self) -> int:
         '''
-            to check msg user inputed correctness
-            TODO: write logic
-        '''
-
-        msg = str(self.linebot.msg)
-        level = self.linebot.Level
-        match level:
-            case "1":
-                return 1
-            case "2":
-                return 2
-            case "3":
-                return 3
-            case _:
-                self.reply_msg = "sorry, I don't understand"
-                self.linebot.reply_msg(self.reply_msg)
-                return 0
-    def organize_event(self) -> None:
-        '''
-            TODO: write logic
-        '''
-
-
-        level = self.organize_event_level()
-        match level:
-            case 0:
-                return
-            case _:
-                self.reply_msg = "sorry, I don't understand"
-                self.linebot.reply_msg(self.reply_msg)
-                return
-            
-    def ask_pro_question_level(self) -> int:
-        '''
-            to check msg user inputed correctness
-            TODO: write logic
+        To check msg user inpted correctness
         '''
 
         msg = str(self.linebot.msg)
         level = self.linebot.Level
         match level:
-            case "1":
-                return 1
-            case "2":
-                return 2
-            case "3":
-                return 3
-            case _:
-                self.reply_msg = "sorry, I don't understand"
-                self.linebot.reply_msg(self.reply_msg)
-                return 0
-            
-    def ask_pro_question(self) -> None:
-        '''
-            TODO: write logic
-        '''
-
-
-        level = self.ask_pro_question_level()
-        match level:
             case 0:
-                return
-            case _:
-                self.reply_msg = "sorry, I don't understand"
-                self.linebot.reply_msg(self.reply_msg)
-                return
+                if msg == "initiate activity":
+                    return level
+                else:
+                    '''
+                    TODO: create a GPTs fine-tune model
+                    '''
+
+        
