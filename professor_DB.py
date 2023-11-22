@@ -6,12 +6,12 @@ import json
 from datetime import datetime as dt
 from pymongo.errors import BulkWriteError
 
-dotenv.load_dotenv() #Preparing your MONGODB_URL
+dotenv.load_dotenv()  # Preparing your MONGODB_URL
 
 validation_path = Path("data_validation.json")
 
 with open(validation_path, "r") as file:
-    
+
     json_and_doc = json.load(file)
 
 validation_rules = json_and_doc["validation_rules"]
@@ -38,7 +38,7 @@ def create_professor_info(db_name: pymongo.CursorType,
     
     """
     This function create collections and inserting data.
-    
+
     Args:
         data: It should contains name, gender, subject_taught.
         
@@ -65,11 +65,11 @@ def delete_data(db_name: pymongo.CursorType,
     
 def update_data(professor: str,
                 update_target: [str, dict]) -> None:
-    
+
     subject = update_target[0]
     professor_db = client.get_database(professor)
     collection = professor_db.get_collection(subject)
-        
+
     try:
         collection.delete_one(update_target[1])
     except ValueError:
@@ -81,10 +81,10 @@ def find_data(professor: str,
 
     subject = find_target["subject"]
     target_date = find_target["date"]
-    
+
     professor_db = client.get_database(professor)
     collection = professor_db.get_collection(subject)
-    
+
     try:
         collection.find_one({"date": target_date})
     except ValueError:
@@ -103,3 +103,8 @@ if __name__ == '__main__':
     
     test_DB = create_professor_database("professor_database")
     print(test_DB)
+
+
+if __name__ == '__main__':
+
+    print("[INFO] Test is successful")
