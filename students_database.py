@@ -6,8 +6,9 @@ import json
 
 dotenv.load_dotenv()
 
-## 下面連結得自行連結 ##
-myclient = pymongo.MongoClient(os.getenv("MONGODB_URL"))
+
+myclient = pymongo.MongoClient(
+    os.getenv("MONGODB_URL"), tls=True, tlsAllowInvalidCertificates=True)
 mydb = myclient["2023_nknu_linebot"]
 mycol = mydb["student_profile"]
 
@@ -15,5 +16,6 @@ mycol = mydb["student_profile"]
 with open('database.json', 'r', encoding='utf-8') as json_file:
     students_data = json.load(json_file)
 
-
-mycol.insert_many(students_data)
+if __name__ == "__main__":
+    # mycol.insert_many(students_data)
+    pass
