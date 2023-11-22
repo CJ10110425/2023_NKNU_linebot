@@ -24,11 +24,34 @@ def find_information_by_userid(user_id,information=["stu_name","stu_gender","stu
     results = mycol.find(query)
     classes = []
     for result in results:
+        print(result)
         classes.append(result[information])
     return classes
+
+def find_userid_by_course(target_student_class):
+
+    ## 從學生的課程找尋學生的ID ##
+    IDs = []
+    ## 鎖定想查詢課程##
+    query = {"stu_gender": {"$in": [target_student_class]}}
+    ## 找尋符合相同資料的人##
+    results = mycol.find(query)
+    print (results)
+    ## 接續將相同課程的學生的 "Student_name" 這組資料由 append接續儲存至results ##
+    for result in results:
+        IDs.append(result["user_id"])
+    return IDs
+
+
+def main():
+    print(find_information_by_userid("王麒勛","stu_gender"))
+if __name__ == "__main__":
+    main()
 
 
 def update_attributes(user_id,new_attribute,attributes=["stu_name","stu_gender","stu_gender","stu_id","stu_subject","mail","activation_code","status","level","identity"]):
     mycol.update_one({"user_id":user_id},{"$set":{attributes:new_attribute}})
+
+
     
     ## 更新level需要轉成int ##
