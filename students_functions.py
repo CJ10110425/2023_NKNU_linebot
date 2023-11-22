@@ -2,12 +2,6 @@ import pymongo
 import dotenv
 import os
 
-dotenv.load_dotenv()
-
-    ## 下面連結得自行連結 ##
-myclient = pymongo.MongoClient(os.getenv("MONGODB_URL"))
-mydb = myclient["student_db"]
-mycol = mydb["student_profile"]
 
     
 def insert_userprofile(user_id , stu_name , stu_gender , stu_id , stu_subject , mail, activation_code , status , level , identity):
@@ -15,7 +9,6 @@ def insert_userprofile(user_id , stu_name , stu_gender , stu_id , stu_subject , 
     mycol.insert_one({"user_id":user_id ,"stu_name":stu_name , "stu_gender":stu_gender , "stu_id":stu_id , "stu_subject":stu_subject , 
                       "mail":mail , "activation_code":activation_code , "status":status , "level":level , "identity":identity})
     
-
 
 def find_information_by_userid(user_id,information=["stu_name","stu_gender","stu_gender","stu_id","stu_subject","mail","activation_code","status","level","identity"]):
     ## level屬性為int,其餘為string ##

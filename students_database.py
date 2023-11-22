@@ -7,7 +7,7 @@ dotenv.load_dotenv()
 
 ## 下面連結得自行連結 ##
 myclient = pymongo.MongoClient(os.getenv("MONGODB_URL"))
-mydb = myclient["student_db"]
+mydb = myclient["2023_nknu_linebot"]
 mycol = mydb["student_profile"]
 
 students_data = [
@@ -1029,4 +1029,3 @@ students_data = [
     }
    
 ]
-mycol.insert_many(students_data)
