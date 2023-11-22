@@ -1,7 +1,12 @@
 import pymongo
 import dotenv
 import os
+dotenv.load_dotenv()
 
+    ## 下面連結得自行連結 ##
+myclient = pymongo.MongoClient(os.getenv("MONGODB_URL"))
+mydb = myclient["2023_nknu_linebot"]
+mycol = mydb["student_profile"]
 
     
 def insert_userprofile(user_id , stu_name , stu_gender , stu_id , stu_subject , mail, activation_code , status , level , identity):
