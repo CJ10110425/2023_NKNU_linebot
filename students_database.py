@@ -14,6 +14,6 @@ mycol = mydb["student_profile"]
 # 打開 JSON 檔案並讀取內容
 with open('database.json', 'r', encoding='utf-8') as json_file:
     students_data = json.load(json_file)
-    
+
 
 mycol.insert_many(students_data)
