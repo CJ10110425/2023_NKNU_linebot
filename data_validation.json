@@ -1,32 +1,46 @@
-{"validation_rules": {
-    "insert_validation": [{
+{
+    "professors_db": {
         "$jsonSchema": {
-            "bsonType": "Object",
-            "required": ["name", "gender", "subject_Taught"],
+            "bsonType": "object",
+            "required": ["user_id", "pro_name", "pro_gender", "teach_subject", "mail", "activation_code", "status", "level", "identity"],
             "properties": {
-                "name": {
+                "user_id": {
                     "bsonType": "string",
                     "description": "must be a string"
                 },
-                "gender": {
+                "pro_name": {
                     "bsonType": "string",
                     "description": "must be string"
                 },
-                "subject_taught": {
-                    "anyof": [
-                        {"bsonType": "list"},
-                        {"bsonType": "string"}
-                    ],
-                    "desciption": "data type can be a string or a list"
-                }
+                "pro_gender": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                },
+                "teach_subject":{ 
+                    "bsonType": "array",
+                    "description": "data type can be a string or a list"
+                },
+                "mail": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                },
+                "activation_code": {
+                    "bsonType": "int",
+                    "description": "must be int"
+                },
+                "status": {
+                    "enum": ["None", "Standard"],
+                    "description": "can be one of the enum vales"
+                },
+                "level": {
+                    "bsonType": "int",
+                    "description": "must be int"
+                },
+                "identity": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                }       
             }
         }
-    }]
-},
-"document": {
-    "insert_test": {
-        "name": "Jason",
-        "gender": "Male",
-        "subject_taught": "Data_Science"
     }
-}}
+}
