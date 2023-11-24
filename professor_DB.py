@@ -17,7 +17,7 @@ with open(validation_path, "r") as file:
 with open(test_doc, "r") as file:
     test_doc = json.load(file)
 
-validation_rules = validation_data
+validation_rules = validation_data["professors_db"]
 test_doc = test_doc["test_document"]
 
 
@@ -29,7 +29,11 @@ except ConnectionFailure as e:
 
 
 def find_data_config(db_name: Collection) -> list:
+    """
     
+    This function gives the information of the validation configuration.
+    
+    """
     valid_config = validation_rules[str(db_name.name)]["$jsonSchema"]["properties"]
     valid_config_list = list(valid_config.keys())
     
@@ -39,9 +43,11 @@ def find_data_config(db_name: Collection) -> list:
 def create_database(db_name: str) -> Collection:
     
     """
-    This function create a database with a schema valdation, and returning 
-    a collection.
+    
+    建立教授的資料庫
+    
     """
+    
     collection_list = nknu_linebot_db.list_collection_names()
     
     if db_name not in collection_list:
@@ -56,15 +62,9 @@ def store_info(col_name: Collection,
                data: dict) -> None:
     
     """
-    This function create collections and inserting data.
-
-    Args:
-        data: It should contains name, gender, subject_taught.
-        
-    Example:
-        data = {"Name": "Jason Zheng",
-                "Gender": "male",
-                "Subject_Taught": "English"}
+    
+    將資料存進所指定的資料集合
+    
     """
     
     professor_info = col_name.find_one({"user_id": data["user_id"]})
@@ -77,53 +77,57 @@ def store_info(col_name: Collection,
             print(f"ValidationError: {e.details['writeEorrors'][0]['errmsg']}")
     
 
-def delete_data(db_name: Collection,
-                user_id: str) -> None:
+def delete_data(col_name: Collection,
+                user_id: str) -> int:
+    """
     
-    db_name.delete_one({"user_id": user_id})
+    可以將指定的user_id刪除
+    當回傳值為零時，代表刪除失敗，可能並未有此資料
+    當回傳直不為零時，表示刪除幾組資料
+    
+    """
+    
+    delete_result = col_name.delete_one({"user_id": user_id})
+    
+    return delete_result.deleted_count()
                                                                        
-    
-    
-def update_data(db_name: Collection,
+                                                                       
+def update_data(col_name: Collection,
                 user_id: str,
-                update_data: dict) -> None:
+                update_data: dict) -> dict:
     
-    data_config = find_data_config(db_name)
+    """
+    
+    更新集合中的資料
+    當有不符合驗證集合的更新資料，會raise ValueError
+    
+    """
+    
+    data_config = find_data_config(col_name)
     update_config = list(update_data.keys())
     
     for data in update_config:
         if data not in data_config:
             raise ValueError(f"The update data does not match validation schema")
     
-    amount = len(update_data)
+    result = col_name.update_one({"user_id": user_id}, {"$set": update_data})
+    returndata = {"modified_info": result.modified_count, "changed_info": data_config}
     
-    if amount == 1:
-        db_name.update_one({"user_id": user_id}, {"$set": update_data})
-    try:
-        db_name.delete_one(update_data[1])
-    except ValueError:
-        print(f"This data is not in the collection")
+    return returndata
 
 
-def find_data(professor: str,
-              find_target: dict) -> None:
-
-    subject = find_target["subject"]
-    target_date = find_target["date"]
-
-    professor_db = client.get_database(professor)
-    collection = professor_db.get_collection(subject)
-
-    try:
-        collection.find_one({"date": target_date})
-    except ValueError:
-        print(f"This data is not in the collection")
+def find_data(col_name: Collection,
+              user_id: str) -> dict or None:
     
-
-def add_data(db_name: pymongo.CursorType,
-             add_data: dict) -> pymongo.CursorType: 
+    """
     
-    return db_name.insert_one(add_data)
+    找尋集合中所符合的資料
+    
+    """
+    
+    result = col_name.find_one({"user_id": user_id})
+    
+    return result
 
 
 if __name__ == '__main__':
@@ -131,17 +135,13 @@ if __name__ == '__main__':
     print("[INFO] Test is successful")
     pro_db = create_database(db_name="professors_db")
 
-    lista = find_data_config(pro_db)
-    print(lista)
-    
-    # if pro_db is not None:
-    #     print(f"[INFO] create successfully {pro_db.type}")
+    # print(f"[INFO] create successfully {pro_db.name}")
         
     # for simple in test_doc:
-    #     create_professor_info(col_name=pro_db,
-    #                           data=simple)
+    #     store_info(col_name=pro_db,
+    #                data=simple)
     
-    # result = add_data(db_name=pro_db,
-    #          add_data=test_doc[0])
+    result = find_data(col_name=pro_db,
+                       user_id="123801282")
     
-    # print(result)
+    print(f"Find data: {result}")
