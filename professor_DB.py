@@ -6,23 +6,20 @@ import json
 from pymongo.collection import Collection
 from pymongo.errors import BulkWriteError, ConnectionFailure
 
-dotenv.load_dotenv()  # Preparing your MONGODB_URL
+dotenv.load_dotenv()  # 準備自己資料庫的URL
+
 
 validation_path = Path("data_validation.json")
-test_doc = Path("test_data.json")
+
 
 with open(validation_path, "r") as file:
     validation_data = json.load(file)
 
-with open(test_doc, "r") as file:
-    test_doc = json.load(file)
-
 validation_rules = validation_data["professors_db"]
-test_doc = test_doc["test_document"]
 
 
 try:
-    client = pymongo.MongoClient(os.getenv("MONGODB_URL"))
+    client = pymongo.MongoClient(os.getenv("CJJS"))
     nknu_linebot_db = client["2023_nknu_linebot"]
 except ConnectionFailure as e:
     print(f"Connection failure: {e}")
@@ -31,7 +28,7 @@ except ConnectionFailure as e:
 def find_data_config(db_name: Collection) -> list:
     """
     
-    This function gives the information of the validation configuration.
+    回傳資料驗證格式
     
     """
     valid_config = validation_rules[str(db_name.name)]["$jsonSchema"]["properties"]
@@ -72,7 +69,6 @@ def store_info(col_name: Collection,
     if professor_info is None:
         try:
             col_name.insert_one(data) 
-            print("[INFO] Insert successful")
         except BulkWriteError as e:
             print(f"ValidationError: {e.details['writeEorrors'][0]['errmsg']}")
     
@@ -99,7 +95,7 @@ def update_data(col_name: Collection,
     """
     
     更新集合中的資料
-    當有不符合驗證集合的更新資料，會raise ValueError
+    當有不符合驗證集合的更新資料 raise ValueError
     
     """
     
@@ -128,20 +124,3 @@ def find_data(col_name: Collection,
     result = col_name.find_one({"user_id": user_id})
     
     return result
-
-
-if __name__ == '__main__':
-
-    print("[INFO] Test is successful")
-    pro_db = create_database(db_name="professors_db")
-
-    # print(f"[INFO] create successfully {pro_db.name}")
-        
-    # for simple in test_doc:
-    #     store_info(col_name=pro_db,
-    #                data=simple)
-    
-    result = find_data(col_name=pro_db,
-                       user_id="123801282")
-    
-    print(f"Find data: {result}")
