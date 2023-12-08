@@ -1,0 +1,46 @@
+{
+    "professors_db": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": ["user_id", "pro_name", "pro_gender", "teach_subject", "mail", "activation_code", "status", "level", "identity"],
+            "properties": {
+                "user_id": {
+                    "bsonType": "string",
+                    "description": "must be a string"
+                },
+                "pro_name": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                },
+                "pro_gender": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                },
+                "teach_subject":{ 
+                    "bsonType": "array",
+                    "description": "data type can be a string or a list"
+                },
+                "mail": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                },
+                "activation_code": {
+                    "bsonType": "int",
+                    "description": "must be int"
+                },
+                "status": {
+                    "enum": ["None", "Standard"],
+                    "description": "can be one of the enum vales"
+                },
+                "level": {
+                    "bsonType": "int",
+                    "description": "must be int"
+                },
+                "identity": {
+                    "bsonType": "string",
+                    "description": "must be string"
+                }       
+            }
+        }
+    }
+}
