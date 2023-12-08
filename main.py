@@ -3,4 +3,6 @@ import pro_caching
 
 dict = {"result": "pop", "unity": "polp"}
 
-print(dict['result'])
+dict["we"] = 6
+
+print(dict)

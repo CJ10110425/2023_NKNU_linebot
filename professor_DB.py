@@ -119,12 +119,12 @@ def find_professor_info(user_id: str,
     
     results = col_name.find_one({"user_id": user_id})
     
-    classes = []
+    classes = {}
     clas = str
     
     if isinstance(select_info, list):
         for info in select_info:
-            classes.append({info: results[info]})
+            classes[info] = results[info]
         return classes
     elif isinstance(select_info, str):
         clas = results[select_info]
