@@ -1,50 +1,82 @@
 from MongoDB import MongoDB_profile
+from MongoDB import activated_DB as temp_DB
 from linebot import LineBotApi
 import os
 from linebot.models import *
 
+from MongoDB.students_DB import student_DB as stu_DB
+from MongoDB.professors_DB import professor_DB as pro_DB
+import logging as log
+import dotenv
+from MongoDB import activated_DB as act_DB
 
-class LineBot:
-    def __init__(self, ID, event, msg) -> None:
-        self.line_bot_api = LineBotApi(os.getenv("LINE_BOT_API_TOKEN"))
-        Profile = self.check_initial(ID)
+# Send gmail
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+class LINEBOT:
+    def __init__(self, id, event, msg) -> None:
+        dotenv.load_dotenv()
         self.event = event
-        self.ID = ID
+        self.id = id
         self.msg = msg
-        self.Status = Profile["Status"]
-        self.Level = Profile["Level"]
-        self.Identity = Profile["Identity"]
-        self.Register = Profile["Register"]
+        self.line_bot_api = LineBotApi(os.getenv("LINE_BOT_API_TOKEN"))
+        profile = act_DB.check_profile(id)
+        self.status = profile["status"]
+        self.level = profile["level"]
+        self.identity = profile["identity"]
 
     def reply_msg(self, msg) -> None:
         self.line_bot_api.reply_message(
-            self.event.reply_token, TextSendMessage(msg))
+            self.event.reply_token, TextSendMessage(text=msg))
 
     def push_msg(self, msg) -> None:
-        self.line_bot_api.reply_message(
-            self.event.reply_token, TextSendMessage(msg))
+        self.line_bot_api.push_message(self.id, TextSendMessage(text=msg))
 
-    def check_initial(self, ID) -> dict:
-        if MongoDB_profile.check_profil_exist(ID):  # 確認是否有使用者資料
-            return MongoDB_profile.find_profile(ID)
+    def find_stu_and_pro_DB(self, id, attributes=["stu_name", "stu_gender", "stu_id", "stu_subject", "mail", "activation_code", "status", "level", "identity"]) -> dict:
+        student = stu_DB.find_student_by_userid(id, attributes)
+        professor = ['none']
+        if not student and professor:
+            return professor
+        elif student and not professor:
+            return student
         else:
-            Profile = {"User_Id": ID, "Status": "Standard",
-                       "Level": 0, "Identity": "None", "Register": "None"}
-            MongoDB_profile.store_profile(Profile)
-            return Profile
+            log.error("find_stu_and_pro_DB error")
 
-    def Change_Status(self, Status):
-        self.Status = Status
-        MongoDB_profile.update_Status(self.ID, Status)
+    def send_activation_email(slef, recipient_email, activation_code):
+        # SMTP 服務器設置（以 Gmail 為例）
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587  # 對於 TLS
+        username = "cjjs0322@gmail.com"
+        password = "oiel lzxv ajpy kper"  # TODO:把東西放到.env裡面
 
-    def Change_Level(self, Level):
-        self.Level = Level
-        MongoDB_profile.update_Level(self.ID, Level)
+        # 創建郵件對象
+        msg = MIMEMultipart()
+        msg['From'] = username
+        msg['To'] = recipient_email
+        msg['Subject'] = "您的啟動碼"
 
-    def Change_Register(self, Register):
-        self.Register = Register
-        MongoDB_profile.update_Register(self.ID, Register)
+        # 郵件正文
+        body = f"您的啟動碼是：{activation_code}"
+        msg.attach(MIMEText(body, 'plain'))
 
-    def Change_Identity(self, Identity):
-        self.Identity = Identity
-        MongoDB_profile.update_Identity(self.ID, Identity)
+        # 建立 SMTP 連接
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # 啟動 TLS 加密
+
+        # 登入 SMTP 服務器
+        try:
+            server.login(username, password)
+            # 發送郵件
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+
+        except smtplib.SMTPAuthenticationError:
+            log.error("Error: Authentication failed")
+
+        # 斷開連接
+        server.quit()
+
+    def update_status(self, status):
+        act_DB.update_status(self.id, status)
