@@ -1,269 +1,137 @@
-import dotenv
+
+'''
+使用linebot卻沒有初始化
+'''
+
+from MongoDB import activated_DB as act_DB
+from MongoDB import temporary_DB as temp_DB
+from MongoDB.professors_DB import professor_DB as prof_DB
+from MongoDB.students_DB import student_DB as stu_DB
 from Rich_menu import rich_menu
-dotenv.load_dotenv()
-
-'''
-    Create Init Database
-'''
+import logging as log
 
 
-class _None:
-
+class visitor:
     def __init__(self, linebot) -> None:
         self.linebot = linebot
-        self.Identity = ["Professor", "Student"]
-        self.Students = ["1"]  # TODO:Create Students table (DB)
-        self.Professors = ["1"]  # TODO:Create Students table (DB)
-        self.Register = "123321"  # self.linebot.Register FIXME: Can delete
+        self.if_msg_start_initializing()
 
-    def Init(self):
-        msg = self.linebot.msg
-        match self.linebot.Status:
-            case "Standard":
-                '''Choose Identity'''
+    def if_msg_start_initializing(self) -> None:
+        if self.linebot.msg.lower() == "start initializing" and self.linebot.status == 'standard':
+            self.linebot.update_status("initializing")
+            self.initializing()
+        elif self.linebot.status == "initializing":
+            self.initializing()
+        else:
+            rich_menu.switch_menu(self.linebot.id, "INITIAL_MENU_ID")
+            self.linebot.reply_msg("請按下初始化按鈕")
 
-                match msg:
-                    case "Student":
-                        '''jump to Student function'''
-                        self.linebot.Change_Status("Student_Init")
-                        self.Student_Init()
-                    case "Professor":
-                        self.linebot.Change_Status('Professor_Init')
-                        self.Professor_Init()
-                    case _:
+    def change_level(self, level) -> None:
+        '''
+        更改level
+        '''
+        act_DB.update_level(self.linebot.id, level)
+
+    def initializing(self) -> None:
+        '''
+        初始化功能
+        '''
+        level = self.linebot.level
+
+        match level:
+            case 0:
+                temp_DB.insert_profile(
+                    self.linebot.id, "none", "none", "none", "none")
+                self.change_level(level + 1)
+                self.linebot.reply_msg("請問你是？\n（學生/教授）\n請輸入（學生 or 教授）")
+            case 1:
+                temp_DB.update_identity(self.linebot.id, self.linebot.msg)
+                self.change_level(level + 1)
+                self.linebot.reply_msg("請輸入姓名")
+            case 2:
+                temp_DB.update_name(self.linebot.id, self.linebot.msg)
+                self.change_level(level + 1)
+                self.linebot.reply_msg("請輸入學校信箱")
+            case 3:
+                temp_DB.update_mail(self.linebot.id, self.linebot.msg)
+                flag, activation_code = self.check_info_correct()
+                if flag:
+                    self.linebot.push_msg("正在核對您的資料...")
+                    self.linebot.send_activation_email(
+                        self.linebot.msg, activation_code)
+                    self.change_level(level + 1)
+                    self.linebot.reply_msg("請輸入啟動碼\n(已將啟動碼傳送到你的信箱\n稍等10秒)")
+            case 4:
+                if self.check_activation_code():
+                    identity = temp_DB.find_identity(self.linebot.id)
+                    temp_DB.delete_profile(self.linebot.id)
+                    act_DB.update_all_to_none(self.linebot.id)
+                    if identity["identity"] == "學生":
+                        act_DB.update_identity(self.linebot.id,"學生")
                         rich_menu.switch_menu(
-                            self.linebot.ID, "INITIAL_MENU_ID")
-                        self.linebot.reply_msg(
-                            "Choose your Identity (Professor / Student)")
-            case "Student_Init":
-                '''jump to Student function'''
-                self.Student_Init()
-            case "Professor_Init":
-                '''jump to Professor function'''
-                self.Professor_Init()
+                            self.linebot.id, "STUDENT_MENU_ID")
+                    elif identity["identity"] == "教授":
+                        act_DB.update_identity(self.linebot.id,"教授")
+                        rich_menu.switch_menu(
+                            self.linebot.id, "PROFESSOR_MENU_ID")
+                    else:
+                        log.error("rich_menu error")
+                    self.linebot.reply_msg("初始化完成\n請查看選單")
 
-    def Student_Level(self) -> int:
+    def check_info_correct(self) -> bool:
         '''
-            To check msg user inputed correctness
-            if it correct jump into next Level ,otherwiise it will jump into currrent Level
+        檢查資料是否正確
         '''
+        profile = temp_DB.find_profile(self.linebot.id)
+        if profile["identity"] == "學生":
+            student = stu_DB.find_student_by_userid(self.linebot.id)
+            if profile["name"] != student["stu_name"]:
+                self.reset_profile()
+                self.linebot.reply_msg("姓名 資料有誤，請重新輸入")
+                return False,
+            elif profile["mail"] != student["mail"]:
+                self.reset_profile()
+                self.linebot.reply_msg("mail 資料有誤，請重新輸入")
+                return False,-1
+            else:
+                temp_DB.update_activation_code(
+                    self.linebot.id, student["activation_code"])
+                return True, student["activation_code"]
+        elif profile["identity"] == "教授":
+            professor = prof_DB.find_professor_by_userid(self.linebot.id)
+            if profile["name"] != professor["pro_name"]:
+                self.reset_profile()
+                self.linebot.reply_msg("姓名 資料有誤，請重新輸入")
+                return False
+            elif profile["mail"] != professor["mail"]:
+                self.reset_profile()
+                self.linebot.reply_msg("mail 資料有誤，請重新輸入")
+                return False
+            else:
+                temp_DB.update_activation_code(
+                    self.linebot.id, professor["activation_code"])
+                return True, professor["activation_code"]
+        else:
+            self.reset_profile()
+            self.linebot.reply_msg("資料有誤，請重新輸入")
+            return False,-1
 
-        msg = self.linebot.msg
-        match self.linebot.Level:
-            case 0:
-                for num in self.Students:
-                    if num == msg:
-                        return self.linebot.Level + 1
-                '''
-                    Query DB with Students number and find and store AC 
-                    self.linebot.Change_Register(AC)
-                '''
-            case 1:
-                if self.Register == msg:
-                    return self.linebot.Level + 1
-                else:
-                    return -1
-            case _:
-                print("Error")
-        return self.linebot.Level
-
-    def Student_Init(self) -> None:
-
-        Level = self.Student_Level()  # To confirm msg is correct
-
-        match Level:
-            case 0:
-                self.linebot.Change_Level(Level)
-                self.linebot.reply_msg("Choose your Identity number")
-            case 1:
-                self.linebot.Change_Level(Level)
-                self.linebot.reply_msg("Input your Activation Code")
-            case 2:
-                self.linebot.Change_Identity("Student")
-                self.linebot.Change_Status("Standard")
-                self.linebot.Change_Level(0)
-                Data = " *** Query Database with Identity to findout Profile"
-                rich_menu.switch_menu(self.linebot.ID, "STUDENT_MENU_ID")
-                self.linebot.reply_msg(
-                    Data+"\n Initialization successful\nPlease restart your line app")
-            case _:
-                self.linebot.Change_Status("Standard")
-                self.linebot.Change_Level(0)
-                self.linebot.reply_msg("Error\nPlease reinitialize")
-
-    def Professor_Level(self) -> int:
+    def check_activation_code(self) -> bool:
         '''
-            To check msg user inputed correctness
-            if it correct jump into next Level ,otherwiise it will jump into currrent Level
+        檢查啟動碼是否正確
         '''
+        profile = temp_DB.find_profile(self.linebot.id)
+        activation_code = profile["activation_code"]
+        if activation_code == self.linebot.msg:
+            return True
+        else:
+            self.reset_profile()
+            self.linebot.reply_msg("啟動碼有誤，請重新初始化")
+            return False
 
-        msg = self.linebot.msg
-        match self.linebot.Level:
-            case 0:
-                for num in self.Professors:
-                    if num == msg:
-                        return 1
-                '''
-                    Query DB with Students number and find and store AC 
-                    self.linebot.Change_Register(AC)
-                '''
-            case 1:
-                if self.Register == msg:
-                    return 2
-                else:
-                    return -1
-            case _:
-                print("Error")
-        return self.linebot.Level
-
-    def Professor_Init(self) -> None:
-        Level = self.Professor_Level()  # To confirm msg is correct
-
-        match Level:
-            case 0:
-                self.linebot.Change_Level(Level)
-                self.linebot.reply_msg("Choose your Identity number")
-            case 1:
-                self.linebot.Change_Level(Level)
-                self.linebot.reply_msg("Input your Activation Code")
-            case 2:
-                self.linebot.Change_Identity("Professor")
-                self.linebot.Change_Status("Standard")
-                self.linebot.Change_Level(0)
-                Data = " *** Query Database with Identity to findout Profile"
-                rich_menu.switch_menu(self.linebot.ID, "PROFESSOR_MENU_ID")
-                self.linebot.reply_msg(
-                    Data+"\n Initialization successful\nPlease restart your line app")
-            case _:
-                self.linebot.Change_Status("Standard")
-                self.linebot.Change_Level(0)
-                self.linebot.reply_msg("Error\nPlease reinitialize")
-
-    # def Check_and_Change_Status(self) -> None:
-    #     msg=self.linebot.msg
-    #     match self.linebot.Status:
-    #         case "Standard":
-    #             '''Choose Identity'''
-    #             if re.match("Student",msg):
-    #                 self.linebot.Change_Status("Student_Init_1")
-    #             elif re.match ("Professor",msg):
-    #                 self.linebot.Change_Status('Professor_Init_1')
-    #         case "Professor_Init_1":
-    #             '''Choose Number'''
-    #             for condition in self.Init_2:
-    #                 if re.match(condition,msg):
-    #                     self.linebot.Change_Status("Professor_Init_2")
-    #                     break
-
-    #         case "Professor_Init_2":
-    #             '''Input activation code'''
-    #             if re.match(self.Init_3,msg):
-    #                 self.linebot.Change_Status("Professor_Init_3")
-    #             else:
-    #                 '''
-    #                     Jump to Standard and Reinitialize
-    #                 '''
-    #                 self.linebot.Change_Status("Standard")
-    #                 self.linebot.reply_msg("Error msg\nChoose your Identity again")
-
-    #         case "Student_Init_1":
-    #             '''Choose Number'''
-    #             for condition in self.Init_2:
-    #                 if re.match(condition,msg):
-    #                     self.linebot.Change_Status("Student_Init_2")
-    #                     break
-
-    #         case "Student_Init_2":
-    #             '''Input activation code'''
-    #             if re.match(self.Init_3,msg):
-    #                 self.linebot.Change_Status("Student_Init_3")
-    #             else:
-    #                 '''
-    #                     Jump to Standard and Reinitialize
-    #                 '''
-    #                 self.linebot.Change_Status("Standard")
-    #                 self.linebot.reply_msg("Error msg\nChoose your Identity again\nChoose your Identity (Professor / Student)")
-
-    #         case _:
-    #             '''No change Status'''
-    #             self.linebot.push_msg("Please enter correct msg")
-
-    # def Find_Professor_AC(self) -> int:
-    #     '''User for Loop to search Professor DB and return Professor Activaation Code '''
-    #     Code="*** Find function"
-    #     return Code
-
-    # def initialize(self) -> None:
-    #     self.Check_and_Change_Status()
-    #     Status=self.linebot.Status
-
-    #     if Status == "Standard":
-    #         # If the AC is incorrect ,a bug will occur
-    #         #Bug : "POST /callback HTTP/1.1" 500 -,exceeded number of replies
-    #         self.linebot.reply_msg("Choose your Identity (Professor / Student)")
-
-    #     elif Status == "Professor_Init_1":
-    #         '''
-    #             Input: Identity (Professor / Student)
-    #         '''
-
-    #     elif Status == "Professor_Init_2":
-    #         '''
-    #             Input: Number (1 ... ?)
-    #         '''
-    #         Data=" *** Query Database with Identity"
-
-    #         " *** Query Database with Identity to find out AC"
-    #         self.linebot.Change_Register("123321")
-
-    #         self.linebot.reply_msg(Data+"\nInput your Activation Code" )
-
-    #     elif Status == "Professor_Init_3":
-    #         '''
-    #             Input: Activation Code (such as "123321")
-    #         '''
-
-    #         '''
-    #             *** switch rich menu to Professor menu
-    #         '''
-
-    #         '''
-    #         Maybe wa can change Status from Professor_Init_3 to Standard
-    #         '''
-
-    #         self.linebot.Change_Identity("Professor")
-    #         self.linebot.Change_Status("Standard")
-    #         Data=" *** Query Database with Identity to findout Profile"
-    #         self.linebot.reply_msg(Data+"\n Initialization successful\nPlease restart your line app" )
-
-    #     elif Status == "Student_Init_1":
-    #         '''
-    #             Input: Identity (Professor / Student)
-    #         '''
-    #         Data=" *** Query Student Database with Identity"
-    #         self.linebot.reply_msg("Choose your Number" + Data)
-
-    #     elif Status == "Student_Init_2":
-    #         '''
-    #             Input: Number (1 ... ?)
-    #         '''
-    #         Data=" *** Query Database with Identity"
-
-    #         " *** Query Database with Identity to find out AC"
-    #         self.linebot.Change_Register("123456")
-
-    #         self.linebot.reply_msg(Data+"\nInput your Activation Code" )
-
-    #     elif Status == "Student_Init_3":
-    #         '''
-    #             Input: Activation Code (such as "123456")
-    #         '''
-
-    #         '''
-    #             *** switch rich menu to Student menu
-    #         '''
-
-    #         self.linebot.Change_Identity("Student")
-    #         self.linebot.Change_Status("Standard")
-    #         Data=" *** Query Database with Identity to findout Profile"
-    #         self.linebot.reply_msg(Data+"\n Initialization successful\nPlease restart your line app" )
+    def reset_profile(self) -> None:
+        '''
+        重置資料
+        '''
+        temp_DB.delete_profile(self.linebot.id)
+        act_DB.update_all_to_none(self.linebot.id)

@@ -4,10 +4,9 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 import os
-import Init
+import init
 from Pro_function import pro_functions
 import linebot_class
-
 
 class LineBotApp:
     def __init__(self):
@@ -30,12 +29,12 @@ class LineBotApp:
 
         @self.handler.add(MessageEvent, message=TextMessage)
         def handle_message(event):
-            linebot = linebot_class.LineBot(
+            linebot = linebot_class.LINEBOT(
                 event.source.user_id, event, event.message.text)
-            match linebot.Identity:
-                case "None":
-                    linebot_init = Init._None(linebot)
-                    linebot_init.Init()
+            print(linebot.identity)
+            match linebot.identity:
+                case "visitor":
+                    init.visitor(linebot)
                 case "Professor":
                     linebot_professor = pro_functions.Professor(linebot)
                     linebot_professor.professor_function()
