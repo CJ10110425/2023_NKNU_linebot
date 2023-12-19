@@ -7,7 +7,7 @@
             "teach_subject": ["digital_design", "electronics_1"],
             "mail": "yllo@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -18,7 +18,7 @@
             "teach_subject": ["physics_of_semiconductor_devices"],
             "mail": "jhtsai@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -29,7 +29,7 @@
             "teach_subject": ["introduction_to_microwave"],
             "mail": "huangcy@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -40,7 +40,7 @@
             "teach_subject": ["electromagnetics", "measurement_of_RF_active_circuits"],
             "mail": "jianmingwu@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -51,7 +51,7 @@
             "teach_subject": ["circuits_2", "electrical_circuit_experiment_and_design", "microelectronics_circuit_experiment_and_design_2", "electronics_3"],
             "mail": "t3550@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -73,7 +73,7 @@
             "teach_subject": ["mircoprocessor", "analog_integrated_circuit_design"],
             "mail": "rlwang@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -84,7 +84,7 @@
             "teach_subject": ["Basic_Elecricity_theory", "engineering_mathematics", "introduction_to_photovoltaic"],
             "mail": "chhuang@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         },
@@ -95,7 +95,7 @@
             "teach_subject": ["None"],
             "mail": "cshong@nknu.edu.tw",
             "activation_code": 0,
-            "status": "None",
+            "status": "none",
             "level": 0,
             "identity": "professor"
         }

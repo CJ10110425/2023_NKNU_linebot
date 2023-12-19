@@ -2,7 +2,7 @@
     "professors_db": {
         "$jsonSchema": {
             "bsonType": "object",
-            "required": ["user_id", "pro_name", "pro_gender", "teach_subject", "mail", "activation_code", "status", "level", "identity"],
+            "required": ["user_id", "pro_name", "pro_gender", "teach_subject", "mail", "activation_code", "status", "level", "identity", "score_index"],
             "properties": {
                 "user_id": {
                     "bsonType": "string",
@@ -39,7 +39,27 @@
                 "identity": {
                     "bsonType": "string",
                     "description": "must be string"
-                }       
+                },      
+                "score_index":[
+                    {
+                        "alpha_upper_score": {
+                            "bsonType": "int",
+                            "description": "store upper case score"
+                        }
+                    },
+                    {
+                        "alpha_lower_score": {
+                            "bsonType": "int",
+                            "description": "store lower case score"
+                        }
+                    },
+                    {
+                        "integer_score": {
+                            "bsonType": "int",
+                            "description": "store integer score"
+                        }
+                    }
+                ]
             }
         }
     }
