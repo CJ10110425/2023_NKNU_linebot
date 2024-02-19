@@ -56,7 +56,7 @@ class visitor:
                 temp_DB.update_mail(self.linebot.id, self.linebot.msg)
                 flag, activation_code = self.check_info_correct()
                 if flag:
-                    self.linebot.push_msg("正在核對您的資料...")
+                    self.linebot.push_msg(self.linebot.id,"正在核對您的資料...")
                     self.linebot.send_activation_email(
                         self.linebot.msg, activation_code)
                     self.change_level(level + 1)
@@ -67,10 +67,12 @@ class visitor:
                     temp_DB.delete_profile(self.linebot.id)
                     act_DB.update_all_to_none(self.linebot.id)
                     if identity["identity"] == "學生":
+                        #TODO:更改id為user_id
                         act_DB.update_identity(self.linebot.id,"學生")
                         rich_menu.switch_menu(
                             self.linebot.id, "STUDENT_MENU_ID")
                     elif identity["identity"] == "教授":
+                        #TODO:更改id為user_id
                         act_DB.update_identity(self.linebot.id,"教授")
                         rich_menu.switch_menu(
                             self.linebot.id, "PROFESSOR_MENU_ID")
@@ -84,11 +86,11 @@ class visitor:
         '''
         profile = temp_DB.find_profile(self.linebot.id)
         if profile["identity"] == "學生":
-            student = stu_DB.find_student_by_userid(self.linebot.id)
+            student = stu_DB.find_student_by_userid(profile["name"])
             if profile["name"] != student["stu_name"]:
                 self.reset_profile()
                 self.linebot.reply_msg("姓名 資料有誤，請重新輸入")
-                return False,
+                return False,-1
             elif profile["mail"] != student["mail"]:
                 self.reset_profile()
                 self.linebot.reply_msg("mail 資料有誤，請重新輸入")

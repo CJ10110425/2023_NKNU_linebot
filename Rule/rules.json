@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "professors_rules": {
+        "distribute_homework": {
+            "rule_1": "",
+            "rule_2": ""
+        },
+        "announce_exam": {
+            "rule_1": "親愛的教授，為了確保學生得到明確的考試資訊，我們希望請您在輸入考試內容時包含以下資訊：\n日期、時間、地點、科目、範圍、是否開書考\n請教授務必將以上內容都提及\n並且輸入的格式中！",
+            "rule_2": ""
+        },
+        "handle_student_question": {
+            "rule_1": "",
+            "rule_2": ""
+        }
+    },
+    "students_rules": {
+        "rule_1": "",
+        "rule_2": ""
+    }
+}

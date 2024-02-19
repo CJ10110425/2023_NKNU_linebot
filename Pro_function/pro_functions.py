@@ -10,22 +10,47 @@ import time
 import logging
 from Pro_function import pro_anno_exam
 from dotenv import load_dotenv
+import logging as log
+import json
 
 
-
-class Professor:
+class professor:
     def __init__(self, linebot) -> None:
         load_dotenv()
         self.linebot = linebot
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         openai.api_key = self.openai_api_key
         self.reply_msg = ""
+        self.professor_function()
+
+    def read_json_rule() -> dict:
+        file_path = 'Rule/rules.json'
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+
+            rule_1_content = data.get("professors_rules", {})
+
+            return rule_1_content
+        except Exception as e:
+            print("發生錯誤：", e)
+            return "讀取教授規則錯誤"
 
     def professor_function(self) -> None:
-        Status = self.linebot.Status.lower()
-        match Status:
+        status = self.linebot.Status.lower()
+        msg = self.linebot.msg
+        match status:
             case "standard":
-                self.determine_function()
+                match msg.lower():
+                    case "distribute_homework":
+                        self.linebot.update_status("distribute_homework")
+                        self.distribute_homework()
+                    case "announce_exam":
+                        self.linebot.update_status("announce_exam")
+                        self.announce_exam()
+                    case "handle_student_question":
+                        self.linebot.update_status("handle_student_question")
+                        self.handle_student_question()
             case "distribute_homework":
                 self.distribute_homework()
             case "announce_exam":
@@ -34,22 +59,13 @@ class Professor:
                 self.handle_student_question()
             case _:
                 logging.error(
-                    'Unhandled case in professor_function with Status: %s', Status)
+                    'Unhandled case in professor_function with Status: %s', status)
                 self.linebot.reply_msg(
                     "An unexpected error occurred. Please try again.")
 
-
-    def determine_function(self) -> None:
-        match self.linebot.msg:
-            case "distribute_homework":
-                self.linebot.Change_Status("distribute_homework")
-                self.distribute_homework()
-            case "announce_exam":
-                self.linebot.Change_Status("announce_exam")
-                self.announce_exam()
-            case "handle_student_question":
-                self.linebot.Change_Status("handle_student_question")
-                self.handle_student_question()
+    def send_msg_to_students(self, msg: str, students_user_id_list) -> None:
+        for student_user_id in students_user_id_list:
+            self.linebot.push_msg(msg, student_user_id)
 
     def announce_exam_level(self) -> int:
         '''
@@ -87,9 +103,9 @@ class Professor:
         level = self.announce_exam_level()
         match level:
             case 0:
+                rule = self.read_json_rule()
                 self.linebot.Change_Level(level)
-                # TODO: create rule.json to set up the rule (read/write file)
-                self.linebot.reply_msg("rule"+self.reply_msg)
+                self.linebot.reply_msg(rule["annouce_exam"]["rule_1"]+self.reply_msg)
             case 1:
                 self.linebot.Change_Level(level)
                 self.linebot.reply_msg(

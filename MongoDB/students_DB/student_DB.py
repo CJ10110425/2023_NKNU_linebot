@@ -7,7 +7,7 @@ dotenv.load_dotenv()
 myclient = pymongo.MongoClient(
     os.getenv("MONGODB_URL"), tls=True, tlsAllowInvalidCertificates=True)
 mydb = myclient["2023_nknu_linebot"]
-mycol = mydb["student_profile"]
+mycol = mydb["student_db"]
 
 
 def insert_userprofile(user_id, stu_name, stu_gender, stu_id, stu_subject, mail, activation_code, status, level, identity):

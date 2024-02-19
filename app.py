@@ -31,14 +31,13 @@ class LineBotApp:
         def handle_message(event):
             linebot = linebot_class.LINEBOT(
                 event.source.user_id, event, event.message.text)
-            print(linebot.identity)
+            print(linebot.identity) #TODO:delete
             match linebot.identity:
                 case "visitor":
                     init.visitor(linebot)
-                case "Professor":
-                    linebot_professor = pro_functions.Professor(linebot)
-                    linebot_professor.professor_function()
-                case "Student":
+                case "professor":
+                    pro_functions.professor(linebot)
+                case "student":
                     # go to Student Doc
                     pass
 

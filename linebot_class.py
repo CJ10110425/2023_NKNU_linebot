@@ -32,8 +32,8 @@ class LINEBOT:
         self.line_bot_api.reply_message(
             self.event.reply_token, TextSendMessage(text=msg))
 
-    def push_msg(self, msg) -> None:
-        self.line_bot_api.push_message(self.id, TextSendMessage(text=msg))
+    def push_msg(self, id,msg) -> None:
+        self.line_bot_api.push_message(id, TextSendMessage(text=msg))
 
     def find_stu_and_pro_DB(self, id, attributes=["stu_name", "stu_gender", "stu_id", "stu_subject", "mail", "activation_code", "status", "level", "identity"]) -> dict:
         student = stu_DB.find_student_by_userid(id, attributes)

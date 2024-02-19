@@ -3,7 +3,6 @@ import re
 import os
 from dotenv import load_dotenv
 
-
 # Organize professor's copywriting
 def Organising_Profes_test_text(msg) -> (str, bool):
     completion = openai.ChatCompletion.create(
@@ -54,5 +53,5 @@ if __name__ == "__main__":
     # loading evn var
     load_dotenv()
     openai.api_key = os.getenv("OPENAI_API_KEY")
-    msg = "上午11點到下午2點考物理第三章到第八章在512教室不開書考試"
+    msg = "512教室考物理上午1點到下午2點範圍第三章到第八章在不開書考試哈哈哈  三月一號。。。"
     print(Organising_Profes_test_text(msg))
