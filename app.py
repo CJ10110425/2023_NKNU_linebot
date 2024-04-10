@@ -21,15 +21,16 @@ from linebot.v3.webhooks import (
 )
 import certifi
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 # Set the environment variable to point to the cacert.pem file
 os.environ['REQUESTS_CA_BUNDLE'] = '/Users/lipinze/Desktop/Coody/.venv/lib/python3.10/site-packages/certifi/cacert.pem'
 
 
 app = Flask(__name__)
 
-configuration = Configuration(access_token='T2vFpDao5Oqf5Ci9EDgvsw1GV54B6VDvJCJicMbt0NtXS0FTsj+llTDe4r9oBhGcsS1pjL/lb8Ip9I5ABnMGD5AlraJfbTXfLnaCar3haGXwsdo99qnX9NYrlv9j0t4ODX4qce1iPdLOnydXOPk7wQdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('b96701b5a4af4c9de6a19cbf3f59bcd5')
+configuration = Configuration(access_token=os.getenv('LINE_BOT_CHANNEL_ACCESS_TOKEN'))
+handler = WebhookHandler(os.getenv('LINE_BOT_CHANNEL_SECRET'))
 
 
 @app.route("/callback", methods=['POST'])
